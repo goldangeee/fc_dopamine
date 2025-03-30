@@ -27,14 +27,14 @@ def crawl_player_data(request):
     url = "https://fconline.nexon.com/datacenter/PlayerList"
 
     # 검색할 선수 이름
-    name = ""
+    name = "호날두"
 
     # POST 요청에 포함할 데이터 설정
     payload = {
-        # "n1Strong" : 5,
-        "n4OvrMax" : 102,
-        
-        # "strPlayerName": name,
+        "n1Strong" : "5,6,7",
+        "strSeason" : ",825,826,821,814,",
+        "strPlayerName": name,
+        # "n4OvrMax" : 102,
     }
 
     # POST 요청 보내기
@@ -63,7 +63,7 @@ def crawl_player_data(request):
             name = name_element.text.strip()  # 선수 이름
 
             # BP 값을 가져오기 (alt 속성 사용)
-            bp_value = bp_element.find('span', {'class': 'span_bp5'})  # 5강
+            bp_value = bp_element.find('span', {'class': 'span_bp5'})  # bp강화등급
             if bp_value:
                 bp = bp_value['alt']  # alt 속성에서 BP 값 가져오기
             else:
@@ -72,6 +72,8 @@ def crawl_player_data(request):
             # 선수 정보를 MongoDB에 저장
             player_data = {
                 "name": name,
+                # 시즌
+                # 강화등급
                 "value": bp  # 선수 가치(BP)
             }
             players.append(player_data)
